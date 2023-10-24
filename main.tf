@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-2"
+  region = var.region
 }
 
 provider "random" {}
@@ -64,7 +64,7 @@ resource "aws_db_parameter_group" "education" {
 
 resource "aws_db_instance" "education" {
   identifier             = "${var.db_name}-${random_pet.random.id}"
-  instance_class         = "db.t3.micro"
+  instance_class         = var.instance_type
   allocated_storage      = 5
   engine                 = "postgres"
   engine_version         = "15.3"
@@ -75,4 +75,5 @@ resource "aws_db_instance" "education" {
   parameter_group_name   = aws_db_parameter_group.education.name
   publicly_accessible    = true
   skip_final_snapshot    = true
+  storage_encrypted      = var.db_encrypted
 }
